@@ -1,0 +1,1 @@
+web: streamlit run eur_usd_predictor.py --server.port=10000 --server.enableCORS=false
