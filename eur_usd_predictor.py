@@ -40,11 +40,18 @@ def apply_arima_forecast(df):
 
 def generate_signals(df):
     df['Signal'] = 0
-    if df['Forecast'].iloc[-1] > df['Close'].iloc[-1] and df['Sentiment'].iloc[-1] > 0:
-        df.at[df.index[-1], 'Signal'] = 1  # Buy
-    elif df['Forecast'].iloc[-1] < df['Close'].iloc[-1] and df['Sentiment'].iloc[-1] < 0:
-        df.at[df.index[-1], 'Signal'] = -1  # Sell
+    last_idx = df.index[-1]
+
+    forecast = df.at[last_idx, 'Forecast']
+    close = df.at[last_idx, 'Close']
+    sentiment = df.at[last_idx, 'Sentiment']
+
+    if forecast > close and sentiment > 0:
+        df.at[last_idx, 'Signal'] = 1  # Buy
+    elif forecast < close and sentiment < 0:
+        df.at[last_idx, 'Signal'] = -1  # Sell
     return df
+
 
 def backtest(df, initial_balance=10000):
     balance = initial_balance
